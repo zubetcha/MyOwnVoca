@@ -22,7 +22,7 @@ const MyVoca = (props) => {
 
     const voca_list = useSelector((state) => state.voca.list);
 
-    React.useEffect( () => {
+    React.useEffect(() => {
         dispatch(loadVocaFB());
     }, []);
 
@@ -32,34 +32,41 @@ const MyVoca = (props) => {
                 {voca_list.map((list, voca_index) => {
                     return (
                         <Cardbox
-                            key={voca_index}
-                        >
-                            <WordBox>
-                                <p>{list.word}</p>
+                            key={voca_index}>
+                            <VocaBox>
+                                <p
+                                style={{
+                                    fontSize: '20px',
+                                    fontWeight: 'bold',}}
+                                >{list.word}</p>
                                 <p
                                     style={{ fontSize: '0.8rem' }}
-                                >[{list.hiragana}]</p>
-                            </WordBox>
-                            <div>
-                                <CheckRoundedIcon />
-                                <BorderColorRoundedIcon
-                                    onClick={() => {
-                                        history.push("/detail/" + voca_index);
-                                    }}
-                                />
-                                <ClearRoundedIcon
-                                    onClick={() => {
-                                        dispatch(deleteVocaFB(list.id));
-                                    }}
-                                />
-                            </div>
+                                >[ {list.hiragana} ]</p>
+                            </VocaBox>
                             <InfoBox>
-                                <Info>의미</Info>
-                                <p>{list.meaning}</p>
-                                <Info>예문</Info>
-                                <Example>{list.example}</Example>
-                                <Info>해석</Info>
-                                <Example>{list.translate}</Example>
+                                <IconBox>
+                                    <Icon>
+                                    <CheckRoundedIcon />
+                                    <BorderColorRoundedIcon
+                                        onClick={() => {
+                                            history.push("/detail/" + voca_index);
+                                        }}/>
+                                    <ClearRoundedIcon
+                                        onClick={() => {
+                                            dispatch(deleteVocaFB(list.id));
+                                        }}/>
+                                    </Icon>
+                                </IconBox>
+                                <VocaInfo>
+                                    <Info>meaning</Info>
+                                    <VocaData
+                                    style={{color: 'whitesmoke',}}
+                                    >{list.meaning}</VocaData>
+                                    <Info>example sentence</Info>
+                                    <VocaData>{list.example}</VocaData>
+                                    <Info>translation</Info>
+                                    <VocaData>{list.translate}</VocaData>
+                                </VocaInfo>
                             </InfoBox>
                         </Cardbox>
                     )
@@ -76,63 +83,88 @@ const MyVoca = (props) => {
 }
 
 const Container = styled.div`
-    width: 100%;
+    max-width: 1200px;
     height: 100vh;
-    border: 1px solid black;
 
-    padding-top: 40px;
+    padding: 40px 40px 0;
     margin: auto;
 
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 40px;
+    align-content: flex-start;
 `;
 
 const Cardbox = styled.div`
-    width: 400px;
+    min-width: 400px;
     height: 200px;
+    padding: 20px;
 
-    border: 1px solid black;
+    background: #1C1C1D;
     border-radius: 20px;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     align-items: center;
-
+    grid-column-gap: 30px;
 `;
 
-const WordBox = styled.div`
-    width: 150px;
-
-    border: 1px solid black;
+const VocaBox = styled.div`
+    /* border: 1px solid whitesmoke; */
     text-align: center;
+
+    & p {
+        margin: 10px;
+    }
 
 `;
 
 const InfoBox = styled.div`
+    /* border: 1px solid whitesmoke; */
 
-    border: 1px solid black;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+`;
 
+const IconBox = styled.div`
+    /* border: 1px solid whitesmoke; */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    & svg {
+        margin: 0 5px;
+    }
+`;
+
+const Icon = styled.div`
+
+`;
+
+const VocaInfo = styled.div`
+    /* border: 1px solid whitesmoke; */
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 `;
 
 const Info = styled.p`
     font-size: 0.7rem;
+    margin: 0 0 7px 0;
 `;
 
-const Example = styled.p`
-    color: #6495ED;
+const VocaData = styled.p`
+    color: #8FFFF8;
+    margin: 5px 0 20px 0;
 `;
 
 const AddButton = styled.div`
     position: fixed;
-    right: 10px;
-    bottom: 10px;
+    right: 30px;
+    bottom: 30px;
 
     width: 50px;
     height: 50px;
 `;
-
 
 
 export default MyVoca;

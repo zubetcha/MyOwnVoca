@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 
 // Components
@@ -10,28 +11,45 @@ import Detail from './Detail';
 
 
 function App() {
+
+    const history = useHistory();
+
     return (
         <div className="App">
-            <Header>
-                <p>My Own Voca</p>
-            </Header>
-            <Container>
-                <Switch>
-                    <Route exact path="/" component={MyVoca} />
-                    <Route exact path="/addVoca" component={AddVoca} />
-                    <Route exact path="/detail/:index" component={Detail} />
-                </Switch>
-                
-            </Container>
+            <Wrap>
+                <Header>
+                    <Oval
+                        onClick={() => {
+                            history.push('/');
+                        }}>
+                        <Title>My Own Voca</Title>
+                    </Oval>
+                </Header>
+                <Container>
+                    <Switch>
+                        <Route exact path="/" component={MyVoca} />
+                        <Route exact path="/addVoca" component={AddVoca} />
+                        <Route exact path="/detail/:index" component={Detail} />
+                    </Switch>
+                </Container>
+            </Wrap>
         </div>
     );
 }
 
+const Wrap = styled.div`
+    background: #252627;
+    color: whitesmoke;
+
+    width: 100%;
+    height: 100%;
+`;
+
 const Header = styled.div`
     width: 100%;
-    height: 60px;
-    border-bottom: 1px solid grey;
-    background: white;
+    height: 100px;
+    border-bottom: 1px solid whitesmoke;
+    background: #252627;
 
     position: fixed;
     top: 0;
@@ -40,13 +58,27 @@ const Header = styled.div`
 
     display: flex;
     justify-content: center;
-    
+    align-items: center;
+`;
+
+const Oval = styled.div`
+    width: 180px;
+    height: 60px;
+    border: 1px solid whitesmoke;
+    border-radius: 90px / 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Title = styled.div`
+    font: 1.2rem lighter;
 `;
 
 const Container = styled.div`
-    max-width: 1400px;
-    margin: 60px auto 0;
-    
+    max-width: 1200px;
+    margin: 100px auto 0;   
 `;
 
 

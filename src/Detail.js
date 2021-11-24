@@ -62,9 +62,10 @@ const Detail = (props) => {
 const Container = styled.div`
     width: 500px;
     height: 800px;
-    border: 1px solid black;
+    border: 1px solid whitesmoke;
+    border-radius: 20px;
 
-    margin: auto;
+    margin: auto 0;
 `;
 
 const Title = styled.p`

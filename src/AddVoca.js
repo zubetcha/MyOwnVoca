@@ -55,7 +55,7 @@ const AddVoca = (props) => {
 const Container = styled.div`
     width: 500px;
     height: 800px;
-    border: 1px solid black;
+    border: 1px solid whitesmoke;
 
     margin: auto;
 `;
