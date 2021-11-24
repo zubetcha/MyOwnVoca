@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
 
 // Components
 import MyVoca from './MyVoca';
 import AddVoca from './AddVoca';
+import Detail from './Detail';
 
 
 function App() {
-    let history = useHistory();
     return (
         <div className="App">
             <Header>
@@ -18,7 +18,8 @@ function App() {
             <Container>
                 <Switch>
                     <Route exact path="/" component={MyVoca} />
-                    <Route exact path="/add" component={AddVoca} />
+                    <Route exact path="/addVoca" component={AddVoca} />
+                    <Route exact path="/detail/:index" component={Detail} />
                 </Switch>
                 
             </Container>
