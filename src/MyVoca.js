@@ -1,12 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteVocaFB, loadVocaFB } from './redux/modules/voca';
-import { db } from './firebase';
-import { collection, getDoc, getDocs, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-
-
 
 // Components
 
@@ -14,7 +10,9 @@ import { collection, getDoc, getDocs, addDoc, updateDoc, doc, deleteDoc } from '
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import { checkboxClasses } from '@mui/material';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import ArrowDownwardRounded from '@mui/icons-material/ArrowDownwardRounded';
 
 const MyVoca = (props) => {
     const history = useHistory();
@@ -34,33 +32,26 @@ const MyVoca = (props) => {
                         <Cardbox
                             key={voca_index}>
                             <VocaBox>
-                                <p
-                                style={{
-                                    fontSize: '20px',
-                                    fontWeight: 'bold',}}
-                                >{list.word}</p>
-                                <p
-                                    style={{ fontSize: '0.8rem' }}
-                                >[ {list.hiragana} ]</p>
+                                <Word>{list.word}</Word>
+                                <p style={{ fontSize: '0.8rem' }}>
+                                    [ {list.pronunciation} ]</p>
                             </VocaBox>
                             <InfoBox>
                                 <IconBox>
-                                    <Icon>
                                     <CheckRoundedIcon />
                                     <BorderColorRoundedIcon
                                         onClick={() => {
                                             history.push("/detail/" + voca_index);
-                                        }}/>
+                                        }} />
                                     <ClearRoundedIcon
                                         onClick={() => {
                                             dispatch(deleteVocaFB(list.id));
-                                        }}/>
-                                    </Icon>
+                                        }} />
                                 </IconBox>
                                 <VocaInfo>
                                     <Info>meaning</Info>
                                     <VocaData
-                                    style={{color: 'whitesmoke',}}
+                                        style={{ color: 'whitesmoke', }}
                                     >{list.meaning}</VocaData>
                                     <Info>example sentence</Info>
                                     <VocaData>{list.example}</VocaData>
@@ -72,15 +63,31 @@ const MyVoca = (props) => {
                     )
                 })}
             </Container>
-            <AddButton
-                onClick={() => {
-                    history.push("/addVoca");
-                }}
-            >추가</AddButton>
+            <ScrollButton
+            onClick={() => {
+                window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+            }}
+            style={{ top: '140px', }}>
+                <ArrowUpwardRoundedIcon />
+            </ScrollButton>
+            <AddVoca>
+                <AddRoundedIcon
+                    onClick={() => {
+                        history.push("/addVoca");
+                    }} />
+            </AddVoca>
+            <ScrollButton
+            onClick={() => {
+                window.scrollTo({top: window.innerHeight, left: 0, behavior: 'smooth'});
+            }}
+            style={{ top: '240px', }}>
+                <ArrowDownwardRounded />
+            </ScrollButton>
         </div>
-
     )
 }
+
+
 
 const Container = styled.div`
     max-width: 1200px;
@@ -95,6 +102,34 @@ const Container = styled.div`
     align-content: flex-start;
 `;
 
+const VocaBox = styled.div`
+    /* border: 1px solid whitesmoke; */
+    text-align: center;
+
+    & p {
+        margin: 5px 0;
+    }
+
+`;
+
+const Word = styled.p`
+    font-size: 20px;
+    font-weight: bold;
+
+    display: inline-block;
+
+    &::after {
+        content: '';
+        display: block;
+        border-bottom: 5px solid #FA8072;
+        transform: scaleX(0);
+        transition: transform 250ms ease-in-out;
+    } 
+    &:hover::after {
+        transform: scaleX(1);
+    }
+`;
+
 const Cardbox = styled.div`
     min-width: 400px;
     height: 200px;
@@ -102,26 +137,26 @@ const Cardbox = styled.div`
 
     background: #1C1C1D;
     border-radius: 20px;
+    box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
 
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
-    grid-column-gap: 30px;
-`;
+    grid-column-gap: 20px;
 
-const VocaBox = styled.div`
-    /* border: 1px solid whitesmoke; */
-    text-align: center;
-
-    & p {
-        margin: 10px;
+    &:hover > ${VocaBox} > ${Word} {
+        &::after {
+        content: '';
+        display: block;
+        border-bottom: 5px solid #FE7262;
+        transform: scaleX(1);
+        transition: transform 250ms ease-in-out;
+        } 
     }
-
 `;
 
 const InfoBox = styled.div`
     /* border: 1px solid whitesmoke; */
-
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 `;
@@ -134,11 +169,11 @@ const IconBox = styled.div`
 
     & svg {
         margin: 0 5px;
+        font-size: 1.2rem;
+        &:hover {
+            cursor: pointer;
+        }
     }
-`;
-
-const Icon = styled.div`
-
 `;
 
 const VocaInfo = styled.div`
@@ -150,20 +185,78 @@ const VocaInfo = styled.div`
 const Info = styled.p`
     font-size: 0.7rem;
     margin: 0 0 7px 0;
+    color: #C2C2C2;
 `;
 
 const VocaData = styled.p`
+    font-size: 0.9rem;
     color: #8FFFF8;
     margin: 5px 0 20px 0;
 `;
 
-const AddButton = styled.div`
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
+const SlideIn = keyframes`
+    from {
+      transform: translateX(200%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+`;
 
-    width: 50px;
-    height: 50px;
+const AddVoca = styled.div`
+    & svg {
+        font-size: 1.5rem;
+    }
+
+    position: fixed;
+    right: 20px;
+    top: 190px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 0.3px solid #9F9F9F;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 10px 0px;
+
+    will-change: transform;
+    transition: transform 600ms;
+
+    animation: ${SlideIn} 1000ms linear;
+
+    &:hover {
+        box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 10px 0px;
+        transform: rotate(90deg);
+        border: 0;
+        background: #FE7262;
+        opacity: 0.9;
+    }
+`;
+
+const ScrollButton = styled.div`
+    & svg {
+        font-size: 1.5rem;
+    }
+
+    position: fixed;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 0.3px solid #9F9F9F;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 10px 0px;
+
+    animation: ${SlideIn} 1000ms linear;
 `;
 
 

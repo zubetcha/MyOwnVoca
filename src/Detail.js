@@ -8,7 +8,7 @@ import { updateVocaFB } from './redux/modules/voca';
 const Detail = (props) => {
 
     const word = React.useRef(null);
-    const hiragana = React.useRef(null);
+    const pronunciation = React.useRef(null);
     const meaning = React.useRef(null);
     const example = React.useRef(null);
     const translate = React.useRef(null);
@@ -24,7 +24,7 @@ const Detail = (props) => {
     const updateVocaList = () => {
         dispatch(updateVocaFB({
             word: word.current.value,
-            hiragana: hiragana.current.value,
+            pronunciation: pronunciation.current.value,
             meaning: meaning.current.value,
             example: example.current.value,
             translate: translate.current.value,
@@ -34,54 +34,102 @@ const Detail = (props) => {
 
     return (
         <Container>
-        <Title>단어 수정하기</Title>
-        <UpdateBox>
-            <label>단어</label>
-            <input type="text" ref={word} defaultValue={current_voca? current_voca.word : ""} />
-            <label>히라가나</label>
-            <input type="text" ref={hiragana} defaultValue={current_voca? current_voca.hiragana : ""} />
-            <label>의미</label>
-            <input type="text" ref={meaning} defaultValue={current_voca? current_voca.meaning : ""} />
-            <label>예문</label>
-            <input type="text" ref={example} defaultValue={current_voca? current_voca.example : ""} />
-            <label>해석</label>
-            <input type="text" ref={translate} defaultValue={current_voca? current_voca.translate : ""} />
-            <button
-                onClick={() => {
-                    history.push("/");
-                    updateVocaList();
-                }}
-            >수정하기</button>
-        </UpdateBox>
-    </Container>
+            <UpdateBox>
+                <label>word</label>
+                <input type="text" ref={word} defaultValue={current_voca ? current_voca.word : ""} />
+                <label>pronunciation</label>
+                <input type="text" ref={pronunciation} defaultValue={current_voca ? current_voca.pronunciation : ""} />
+                <label>meaning</label>
+                <input type="text" ref={meaning} defaultValue={current_voca ? current_voca.meaning : ""} />
+                <label>example sentence</label>
+                <input type="text" ref={example} defaultValue={current_voca ? current_voca.example : ""} />
+                <label>translation</label>
+                <input type="text" ref={translate} defaultValue={current_voca ? current_voca.translate : ""} />
+                <button
+                    onClick={() => {
+                        history.push("/");
+                        updateVocaList();
+                    }}
+                >CHANGE<br/>VOCA</button>
+            </UpdateBox>
+        </Container>
     )
 }
 
-
-
 const Container = styled.div`
-    width: 500px;
-    height: 800px;
-    border: 1px solid whitesmoke;
+    position: fixed;
+    top: 440px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: hidden;
+
+    width: 450px;
+    height: 600px;
+
+    background: #1C1C1D;
     border-radius: 20px;
-
-    margin: auto 0;
-`;
-
-const Title = styled.p`
-    text-align: center;
+    box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const UpdateBox = styled.form`
+    width: 300px;
+    padding-top: 50px;
+    margin: auto;
 
     & label {
         display: block;
-    }    
+        margin-bottom: 8px;
 
+        font-size: 0.9rem;
+        color: #C2C2C2;
+    }    
     & input {
         display: block;
+        width: 296px;
+        margin-bottom: 40px;
+        color: whitesmoke;
+        font-size: 1rem;
+
+
+        outline: 0;
+        border: none;
+        border-bottom: 1px solid whitesmoke;
+        background-color: transparent;
+
+        &:focus {
+            outline: none;
+            border-bottom: 1px solid #FFA197;
+        }
     }
-    
+
+    & button {
+        display: block;
+        outline: 0;
+        border: 0;
+        /* border: 1px solid whitesmoke; */
+        border-radius: 50%;
+        background-color: #FE7262;
+
+        width: 80px;
+        height: 80px;
+
+        color: whitesmoke;
+        font-size: 0.9rem;
+        font-weight: bold;
+        line-height: 150%;
+        margin: 30px auto 0 auto;
+
+        cursor: pointer;
+
+        will-change: transform;
+        transition: transform 450ms;
+
+        &:hover {
+            background-color: #FF8A7D;
+            transition: transform 450ms;
+            transform: translateY(-10px);
+        }
+    }
 `;
 
 export default Detail;

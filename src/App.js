@@ -16,34 +16,24 @@ function App() {
 
     return (
         <div className="App">
-            <Wrap>
-                <Header>
-                    <Oval
-                        onClick={() => {
-                            history.push('/');
-                        }}>
-                        <Title>My Own Voca</Title>
-                    </Oval>
-                </Header>
-                <Container>
-                    <Switch>
-                        <Route exact path="/" component={MyVoca} />
-                        <Route exact path="/addVoca" component={AddVoca} />
-                        <Route exact path="/detail/:index" component={Detail} />
-                    </Switch>
-                </Container>
-            </Wrap>
+            <Header>
+                <Oval
+                    onClick={() => {
+                        history.push('/');
+                    }}>
+                    <Title>My Own Voca</Title>
+                </Oval>
+            </Header>
+            <Container>
+                <Switch>
+                    <Route exact path="/" component={MyVoca} />
+                    <Route exact path="/addVoca" component={AddVoca} />
+                    <Route exact path="/detail/:index" component={Detail} />
+                </Switch>
+            </Container>
         </div>
     );
 }
-
-const Wrap = styled.div`
-    background: #252627;
-    color: whitesmoke;
-
-    width: 100%;
-    height: 100%;
-`;
 
 const Header = styled.div`
     width: 100%;
@@ -62,10 +52,11 @@ const Header = styled.div`
 `;
 
 const Oval = styled.div`
-    width: 180px;
+    width: 200px;
     height: 60px;
     border: 1px solid whitesmoke;
-    border-radius: 90px / 30px;
+    border-radius: 100px / 30px;
+    cursor: default;
 
     display: flex;
     justify-content: center;
@@ -80,7 +71,5 @@ const Container = styled.div`
     max-width: 1200px;
     margin: 100px auto 0;   
 `;
-
-
 
 export default App;

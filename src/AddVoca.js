@@ -6,9 +6,9 @@ import { createVocaFB } from './redux/modules/voca';
 
 
 const AddVoca = (props) => {
-    
+
     const word = React.useRef(null);
-    const hiragana = React.useRef(null);
+    const pronunciation = React.useRef(null);
     const meaning = React.useRef(null);
     const example = React.useRef(null);
     const translate = React.useRef(null);
@@ -19,7 +19,7 @@ const AddVoca = (props) => {
     const addVocaList = () => {
         dispatch(createVocaFB({
             word: word.current.value,
-            hiragana: hiragana.current.value,
+            pronunciation: pronunciation.current.value,
             meaning: meaning.current.value,
             example: example.current.value,
             translate: translate.current.value,
@@ -29,51 +29,100 @@ const AddVoca = (props) => {
 
     return (
         <Container>
-            <Title>단어 추가하기</Title>
             <AddBox>
-                <label>단어</label>
+                <label>word</label>
                 <input type="text" ref={word} />
-                <label>히라가나</label>
-                <input type="text" ref={hiragana} />
-                <label>의미</label>
+                <label>pronunciation</label>
+                <input type="text" ref={pronunciation} />
+                <label>meaning</label>
                 <input type="text" ref={meaning} />
-                <label>예문</label>
+                <label>example sentence</label>
                 <input type="text" ref={example} />
-                <label>해석</label>
+                <label>translation</label>
                 <input type="text" ref={translate} />
                 <button
                     onClick={() => {
                         addVocaList();
                         history.push("/")
                     }}
-                >추가하기</button>
+                >ADD<br />VOCA</button>
             </AddBox>
         </Container>
     )
 }
 
 const Container = styled.div`
-    width: 500px;
-    height: 800px;
-    border: 1px solid whitesmoke;
+    position: fixed;
+    top: 440px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: hidden;
 
-    margin: auto;
-`;
+    width: 450px;
+    height: 600px;
 
-const Title = styled.p`
-    text-align: center;
+    background: #1C1C1D;
+    border-radius: 20px;
+    box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const AddBox = styled.form`
+    width: 300px;
+    padding-top: 50px;
+    margin: auto;
 
     & label {
         display: block;
-    }    
+        margin-bottom: 8px;
 
+        font-size: 0.9rem;
+        color: #C2C2C2;
+    }    
     & input {
         display: block;
+        width: 296px;
+        margin-bottom: 40px;
+        color: whitesmoke;
+        font-size: 1rem;
+
+        border: none;
+        border-bottom: 1px solid whitesmoke;
+        background-color: transparent;
+
+        &:focus {
+            outline: none;
+            border-bottom: 1px solid #FFA197;
+        }
     }
-    
+
+    & button {
+        display: block;
+        outline: 0;
+        border: 0;
+        /* border: 1px solid whitesmoke; */
+        border-radius: 50%;
+        background-color: #FE7262;
+
+        width: 80px;
+        height: 80px;
+
+        color: whitesmoke;
+        font-size: 0.9rem;
+        font-weight: bold;
+        line-height: 150%;
+        margin: 30px auto 0 auto;
+
+        cursor: pointer;
+
+        will-change: transform;
+        transition: transform 450ms;
+
+        &:hover {
+            background-color: #FF8A7D;
+            transition: transform 450ms;
+            transform: translateY(-10px);
+        }
+    }
 `;
 
 export default AddVoca;
