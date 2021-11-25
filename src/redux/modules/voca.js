@@ -8,6 +8,7 @@ import { collection, getDoc, getDocs, addDoc, updateDoc, doc, deleteDoc } from '
 
 const LOAD = "voca/LOAD";
 const CREATE = "voca/CREATE";
+const CHECK = "voca/CHECK";
 const UPDATE = "voca/UPDATE"
 const DELETE = "voca/DELETE";
 
@@ -28,6 +29,10 @@ export const loadVoca = (voca_list) => {
 export const createVoca = (voca) => {
     return { type: CREATE, voca };
 };
+
+export const checkVoca = (voca_index, voca_checked) => {
+    return { type: CHECK, voca_index, voca_checked};
+}
 
 export const updateVoca = (voca, voca_index) => {
     return { type: UPDATE, voca, voca_index }
@@ -61,6 +66,23 @@ export const createVocaFB = (voca) => {
     }
 }
 
+export const checkVocaFB = (voca_id) => {
+    return async function (dispatch, getState) {
+        const docRef = doc(db, 'voca', voca_id)
+
+        docRef.checked == false ? await updateDoc(docRef, {checked: true})
+        : await updateDoc(docRef, {checked: false});
+
+        const voca_list = getState().voca.list;
+        const voca_index = voca_list.findIndex((vc) => {
+            return vc.id === voca_id;
+        })
+        const voca_checked = voca_list[voca_index].checked;
+
+        dispatch(checkVoca(voca_index, voca_checked));
+    }
+}
+
 export const updateVocaFB = (voca, voca_id) => {
     return async function (dispatch, getState) {
         const docRef = doc(db, 'voca', voca_id);
@@ -70,7 +92,7 @@ export const updateVocaFB = (voca, voca_id) => {
         const voca_index = voca_list.findIndex((vc) => {
             return vc.id === voca_id;
         })
-        dispatch(updateVoca(voca_index));
+        dispatch(updateVoca(voca_index, voca_id));
     }
 }
 
@@ -102,6 +124,19 @@ export default function reducer(state = initialState, action = {}) {
 
         case "voca/CREATE": {
             const new_voca_list = [...state.list, action.voca];
+            return { list: new_voca_list };
+        }
+
+        case "voca/CHECK": {
+            const new_voca_list = state.list.map((x, i) => {
+                if (parseInt(action.voca_index) === i && action.voca_checked == false) {
+                    return {...x, checked: true};
+                } else if (parseInt(action.voca_index) === i && action.voca_checked == true) {
+                    return {...x, checked: false};
+                } else {
+                    return x;
+                }
+            })
             return { list: new_voca_list };
         }
 

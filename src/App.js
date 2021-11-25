@@ -2,18 +2,21 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 // Components
 import MyVoca from './MyVoca';
 import AddVoca from './AddVoca';
 import Detail from './Detail';
+import NotFound from './NotFound';
 
 
 function App() {
 
     const history = useHistory();
 
+    const voca = useSelector((state) => state.voca.list);
     return (
         <div className="App">
             <Header>
@@ -26,9 +29,10 @@ function App() {
             </Header>
             <Container>
                 <Switch>
-                    <Route exact path="/" component={MyVoca} />
+                    <Route exact path="/" component={MyVoca} voca={voca} />
                     <Route exact path="/addVoca" component={AddVoca} />
                     <Route exact path="/detail/:index" component={Detail} />
+                    <Route path="" component={NotFound} />
                 </Switch>
             </Container>
         </div>

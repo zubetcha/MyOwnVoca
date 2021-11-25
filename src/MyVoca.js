@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteVocaFB, loadVocaFB } from './redux/modules/voca';
+import { deleteVocaFB, loadVocaFB, checkVocaFB } from './redux/modules/voca';
 
 // Components
 
@@ -19,6 +19,7 @@ const MyVoca = (props) => {
     const dispatch = useDispatch();
 
     const voca_list = useSelector((state) => state.voca.list);
+    console.log(voca_list)
 
     React.useEffect(() => {
         dispatch(loadVocaFB());
@@ -37,8 +38,12 @@ const MyVoca = (props) => {
                                     [ {list.pronunciation} ]</p>
                             </VocaBox>
                             <InfoBox>
-                                <IconBox>
-                                    <CheckRoundedIcon />
+                                <IconBox checked={list.checked}>
+                                    <CheckRoundedIcon
+                                    className='check_icon'
+                                    onClick={() => {
+                                        dispatch(checkVocaFB(list.id));
+                                    }} />
                                     <BorderColorRoundedIcon
                                         onClick={() => {
                                             history.push("/detail/" + voca_index);
@@ -48,7 +53,7 @@ const MyVoca = (props) => {
                                             dispatch(deleteVocaFB(list.id));
                                         }} />
                                 </IconBox>
-                                <VocaInfo>
+                                <div>
                                     <Info>meaning</Info>
                                     <VocaData
                                         style={{ color: 'whitesmoke', }}
@@ -57,7 +62,7 @@ const MyVoca = (props) => {
                                     <VocaData>{list.example}</VocaData>
                                     <Info>translation</Info>
                                     <VocaData>{list.translate}</VocaData>
-                                </VocaInfo>
+                                </div>
                             </InfoBox>
                         </Cardbox>
                     )
@@ -67,7 +72,7 @@ const MyVoca = (props) => {
             onClick={() => {
                 window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
             }}
-            style={{ top: '140px', }}>
+            style={{ top: '140px',}}>
                 <ArrowUpwardRoundedIcon />
             </ScrollButton>
             <AddVoca>
@@ -135,7 +140,7 @@ const Cardbox = styled.div`
     height: 200px;
     padding: 20px;
 
-    background: #1C1C1D;
+    background-color: #1C1C1D;
     border-radius: 20px;
     box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
 
@@ -156,9 +161,6 @@ const Cardbox = styled.div`
 `;
 
 const InfoBox = styled.div`
-    /* border: 1px solid whitesmoke; */
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 `;
 
 const IconBox = styled.div`
@@ -174,12 +176,10 @@ const IconBox = styled.div`
             cursor: pointer;
         }
     }
-`;
 
-const VocaInfo = styled.div`
-    /* border: 1px solid whitesmoke; */
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    .check_icon {
+        color: ${(props) => (props.checked == true ? '#FE7262' : 'whitlesmoke')};
+    }
 `;
 
 const Info = styled.p`
