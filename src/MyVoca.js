@@ -19,7 +19,6 @@ const MyVoca = (props) => {
     const dispatch = useDispatch();
 
     const voca_list = useSelector((state) => state.voca.list);
-    console.log(voca_list)
 
     React.useEffect(() => {
         dispatch(loadVocaFB());
@@ -28,21 +27,21 @@ const MyVoca = (props) => {
     return (
         <div>
             <Container>
-                {voca_list.map((list, voca_index) => {
+                {voca_list.map((voca, voca_index) => {
                     return (
                         <Cardbox
-                            key={voca_index}>
+                            key={voca.id}>
                             <VocaBox>
-                                <Word>{list.word}</Word>
+                                <Word>{voca.word}</Word>
                                 <p style={{ fontSize: '0.8rem' }}>
-                                    [ {list.pronunciation} ]</p>
+                                    [ {voca.pronunciation} ]</p>
                             </VocaBox>
                             <InfoBox>
-                                <IconBox checked={list.checked}>
+                                <IconBox checked={voca.checked}>
                                     <CheckRoundedIcon
                                     className='check_icon'
                                     onClick={() => {
-                                        dispatch(checkVocaFB(list.id));
+                                        dispatch(checkVocaFB(voca.id));
                                     }} />
                                     <BorderColorRoundedIcon
                                         onClick={() => {
@@ -50,18 +49,19 @@ const MyVoca = (props) => {
                                         }} />
                                     <ClearRoundedIcon
                                         onClick={() => {
-                                            dispatch(deleteVocaFB(list.id));
+                                            window.alert('단어를 삭제하시겠습니다?');
+                                            dispatch(deleteVocaFB(voca.id));
                                         }} />
                                 </IconBox>
                                 <div>
                                     <Info>meaning</Info>
                                     <VocaData
                                         style={{ color: 'whitesmoke', }}
-                                    >{list.meaning}</VocaData>
+                                    >{voca.meaning}</VocaData>
                                     <Info>example sentence</Info>
-                                    <VocaData>{list.example}</VocaData>
+                                    <VocaData>{voca.example}</VocaData>
                                     <Info>translation</Info>
-                                    <VocaData>{list.translate}</VocaData>
+                                    <VocaData>{voca.translate}</VocaData>
                                 </div>
                             </InfoBox>
                         </Cardbox>
@@ -178,17 +178,21 @@ const IconBox = styled.div`
     }
 
     .check_icon {
-        color: ${(props) => (props.checked == true ? '#FE7262' : 'whitlesmoke')};
+        color: ${(props) => (props.checked == true ? '#FA8072' : 'whitlesmoke')};
     }
 `;
 
 const Info = styled.p`
+    font-family: 'roboto';
+    font-weight: 500;
     font-size: 0.7rem;
     margin: 0 0 7px 0;
     color: #C2C2C2;
 `;
 
 const VocaData = styled.p`
+    font-family: 'Noto Sans KR';
+    font-weight: 400;
     font-size: 0.9rem;
     color: #8FFFF8;
     margin: 5px 0 20px 0;

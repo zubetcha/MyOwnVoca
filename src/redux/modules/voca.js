@@ -16,6 +16,7 @@ const DELETE = "voca/DELETE";
 // ************* Initial Data ************* //
 
 const initialState = {
+    is_loaded: false,
     list: [],
 };
 
@@ -48,7 +49,6 @@ export const deleteVoca = (voca_index) => {
 export const loadVocaFB = (voca_list) => {
     return async function (dispatch) {
         const voca_data = await getDocs(collection(db, 'voca'));
-
         let voca_list = [];
         voca_data.forEach((voca) => {
             voca_list.push({id: voca.id, ...voca.data()});
@@ -62,21 +62,24 @@ export const createVocaFB = (voca) => {
         const docRef = await addDoc(collection(db, 'voca'), voca);
 
         const voca_data = {id: docRef.id, ...voca};
-        dispatch(createVoca(voca_data));
+        // dispatch(createVoca(voca_data));
     }
 }
 
 export const checkVocaFB = (voca_id) => {
     return async function (dispatch, getState) {
         const docRef = doc(db, 'voca', voca_id)
+        
+        const pre_voca_list = getState().voca.list;
+        const voca_index = pre_voca_list.findIndex((vc) => {
+            return vc.id === voca_id;
+        });
+        const pre_checked = pre_voca_list[voca_index].checked;
 
-        docRef.checked == false ? await updateDoc(docRef, {checked: true})
+        pre_checked == false ? await updateDoc(docRef, {checked: true})
         : await updateDoc(docRef, {checked: false});
 
         const voca_list = getState().voca.list;
-        const voca_index = voca_list.findIndex((vc) => {
-            return vc.id === voca_id;
-        })
         const voca_checked = voca_list[voca_index].checked;
 
         dispatch(checkVoca(voca_index, voca_checked));
@@ -92,7 +95,7 @@ export const updateVocaFB = (voca, voca_id) => {
         const voca_index = voca_list.findIndex((vc) => {
             return vc.id === voca_id;
         })
-        dispatch(updateVoca(voca_index, voca_id));
+        dispatch(updateVoca(voca, voca_index));
     }
 }
 
@@ -119,12 +122,12 @@ export const deleteVocaFB = (voca_id) => {
 export default function reducer(state = initialState, action = {}) {
     switch (action.type) {
         case "voca/LOAD": {
-            return { list: action.voca_list};
+            return { list: action.voca_list, is_loaded: true, };
         }
 
         case "voca/CREATE": {
             const new_voca_list = [...state.list, action.voca];
-            return { list: new_voca_list };
+            return { ...state, list: new_voca_list };
         }
 
         case "voca/CHECK": {
@@ -137,7 +140,7 @@ export default function reducer(state = initialState, action = {}) {
                     return x;
                 }
             })
-            return { list: new_voca_list };
+            return { ...state, list: new_voca_list };
         }
 
         case "voca/UPDATE": {
@@ -149,14 +152,14 @@ export default function reducer(state = initialState, action = {}) {
                     new_voca_list.push(x);
                 }
             })
-            return { list: new_voca_list };
+            return { ...state, list: new_voca_list };
         }
 
         case "voca/DELETE": {
             const new_voca_list = state.list.filter((_, i) => {
                 return parseInt(action.voca_index) !== i;
             });
-            return { list: new_voca_list };
+            return { ...state, list: new_voca_list };
         }
 
         default: {

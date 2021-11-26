@@ -10,21 +10,24 @@ import MyVoca from './MyVoca';
 import AddVoca from './AddVoca';
 import Detail from './Detail';
 import NotFound from './NotFound';
+import Spinner from './Spinner';
 
 
 function App() {
 
     const history = useHistory();
+    const is_loaded = useSelector((state) => state.voca.is_loaded);
 
     const voca = useSelector((state) => state.voca.list);
     return (
         <div className="App">
+            { !is_loaded && <Spinner /> }
             <Header>
                 <Oval
                     onClick={() => {
                         history.push('/');
                     }}>
-                    <Title>My Own Voca</Title>
+                    <Title>My own Voca</Title>
                 </Oval>
             </Header>
             <Container>
@@ -39,6 +42,8 @@ function App() {
     );
 }
 
+
+
 const Header = styled.div`
     width: 100%;
     height: 100px;
@@ -48,7 +53,7 @@ const Header = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 1;
 
     display: flex;
     justify-content: center;
@@ -58,7 +63,7 @@ const Header = styled.div`
 const Oval = styled.div`
     width: 200px;
     height: 60px;
-    border: 1px solid whitesmoke;
+    border: 0.5px solid whitesmoke;
     border-radius: 100px / 30px;
     cursor: default;
 
@@ -68,7 +73,9 @@ const Oval = styled.div`
 `;
 
 const Title = styled.div`
-    font: 1.2rem lighter;
+    font-family: 'roboto';
+    font-size: 1.3rem;
+    font-weight: 300;
 `;
 
 const Container = styled.div`

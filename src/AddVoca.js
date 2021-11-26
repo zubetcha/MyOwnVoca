@@ -17,35 +17,47 @@ const AddVoca = (props) => {
     const dispatch = useDispatch();
 
     const addVocaList = () => {
-        dispatch(createVocaFB({
-            word: word.current.value,
-            pronunciation: pronunciation.current.value,
-            meaning: meaning.current.value,
-            example: example.current.value,
-            translate: translate.current.value,
-            checked: false,
-        }))
+        let wordValue = word.current.value;
+        let pronunciationValue = pronunciation.current.value;
+        let meaningValue = meaning.current.value;
+        let exampleValue = example.current.value;
+        let translateValue = translate.current.value;
+
+        if ((wordValue && pronunciationValue && meaningValue &&
+            exampleValue && translateValue) !== '') {
+            dispatch(createVocaFB({
+                word: wordValue,
+                pronunciation: pronunciationValue,
+                meaning: meaningValue,
+                example: exampleValue,
+                translate: translateValue,
+                checked: false,
+            }));
+            history.push("/");
+        } else {
+            window.alert('Please, fill in all blanks.');
+            return false;
+        }
     };
 
     return (
         <Container>
             <AddBox>
                 <label>word</label>
-                <input type="text" ref={word} />
+                <TextArea type="text" ref={word} maxLength='14' />
                 <label>pronunciation</label>
-                <input type="text" ref={pronunciation} />
+                <TextArea type="text" ref={pronunciation} maxLength='20' />
                 <label>meaning</label>
-                <input type="text" ref={meaning} />
+                <TextArea type="text" ref={meaning} maxLength='20' />
                 <label>example sentence</label>
-                <input type="text" ref={example} />
+                <TextArea type="text" ref={example} maxLength='20' />
                 <label>translation</label>
-                <input type="text" ref={translate} />
-                <button
+                <TextArea type="text" ref={translate} maxLength='20' />
+                <AddVocaButton
                     onClick={() => {
                         addVocaList();
-                        history.push("/")
                     }}
-                >ADD<br />VOCA</button>
+                >ADD<br />VOCA</AddVocaButton>
             </AddBox>
         </Container>
     )
@@ -75,53 +87,59 @@ const AddBox = styled.form`
         display: block;
         margin-bottom: 8px;
 
-        font-size: 0.9rem;
+        font-family: 'roboto';
+        font-weight: 500;
+        font-size: 0.8rem;
         color: #C2C2C2;
     }    
-    & input {
-        display: block;
-        width: 296px;
-        margin-bottom: 40px;
-        color: whitesmoke;
-        font-size: 1rem;
+`;
 
-        border: none;
-        border-bottom: 1px solid whitesmoke;
-        background-color: transparent;
+const TextArea = styled.input`
+    display: block;
+    width: 296px;
+    margin-bottom: 40px;
 
-        &:focus {
-            outline: none;
-            border-bottom: 1px solid #FFA197;
-        }
-    }
+    color: whitesmoke;
+    font-size: 0.9rem;
+    font-family: 'Noto Sans KR';
+    font-weight: 400;
+    
 
-    & button {
-        display: block;
-        outline: 0;
-        border: 0;
-        /* border: 1px solid whitesmoke; */
-        border-radius: 50%;
-        background-color: #FE7262;
+    border: none;
+    border-bottom: 1px solid whitesmoke;
+    background-color: transparent;
 
-        width: 80px;
-        height: 80px;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #FFA197;
+    }   
+`;
 
-        color: whitesmoke;
-        font-size: 0.9rem;
-        font-weight: bold;
-        line-height: 150%;
-        margin: 30px auto 0 auto;
+const AddVocaButton = styled.button`
+    display: block;
+    outline: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: #FE7262;
 
-        cursor: pointer;
+    width: 80px;
+    height: 80px;
 
-        will-change: transform;
+    color: whitesmoke;
+    font-family: 'roboto';
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 30px auto 0 auto;
+    cursor: pointer;
+
+    will-change: transform;
+    transition: transform 450ms;
+
+    &:hover {
+        background-color: #FF8A7D;
         transition: transform 450ms;
-
-        &:hover {
-            background-color: #FF8A7D;
-            transition: transform 450ms;
-            transform: translateY(-10px);
-        }
+        transform: translateY(-10px);
     }
 `;
 

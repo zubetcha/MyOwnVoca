@@ -22,35 +22,53 @@ const Detail = (props) => {
     const current_voca = voca_list[voca_index];
 
     const updateVocaList = () => {
-        dispatch(updateVocaFB({
-            word: word.current.value,
-            pronunciation: pronunciation.current.value,
-            meaning: meaning.current.value,
-            example: example.current.value,
-            translate: translate.current.value,
-            checked: false,
-        }, current_voca.id))
+        window.alert('단어를 수정하시겠습니다?');
+        let wordValue = word.current.value;
+        let pronunciationValue = pronunciation.current.value;
+        let meaningValue = meaning.current.value;
+        let exampleValue = example.current.value;
+        let translateValue = translate.current.value;
+
+        if ((wordValue && pronunciationValue && meaningValue &&
+            exampleValue && translateValue) !== '') {
+            dispatch(updateVocaFB({
+                word: wordValue,
+                pronunciation: pronunciationValue,
+                meaning: meaningValue,
+                example: exampleValue,
+                translate: translateValue,
+                checked: current_voca.checked,
+            }, current_voca.id));
+            history.push("/");
+        } else {
+            window.alert('Please, fill in all blanks.');
+            return false;
+        }
     };
 
     return (
         <Container>
             <UpdateBox>
                 <label>word</label>
-                <input type="text" ref={word} defaultValue={current_voca ? current_voca.word : ""} />
+                <TextArea type="text" ref={word} maxLength='14' 
+                defaultValue={current_voca ? current_voca.word : ""} />
                 <label>pronunciation</label>
-                <input type="text" ref={pronunciation} defaultValue={current_voca ? current_voca.pronunciation : ""} />
+                <TextArea type="text" ref={pronunciation} maxLength='20' 
+                defaultValue={current_voca ? current_voca.pronunciation : ""} />
                 <label>meaning</label>
-                <input type="text" ref={meaning} defaultValue={current_voca ? current_voca.meaning : ""} />
+                <TextArea type="text" ref={meaning} maxLength='20' 
+                defaultValue={current_voca ? current_voca.meaning : ""} />
                 <label>example sentence</label>
-                <input type="text" ref={example} defaultValue={current_voca ? current_voca.example : ""} />
+                <TextArea type="text" ref={example} maxLength='20' 
+                defaultValue={current_voca ? current_voca.example : ""} />
                 <label>translation</label>
-                <input type="text" ref={translate} defaultValue={current_voca ? current_voca.translate : ""} />
-                <button
+                <TextArea type="text" ref={translate} maxLength='20' 
+                defaultValue={current_voca ? current_voca.translate : ""} />
+                <ChangeVocaButton
                     onClick={() => {
-                        history.push("/");
                         updateVocaList();
                     }}
-                >CHANGE<br/>VOCA</button>
+                >CHANGE<br />VOCA</ChangeVocaButton>
             </UpdateBox>
         </Container>
     )
@@ -80,55 +98,59 @@ const UpdateBox = styled.form`
         display: block;
         margin-bottom: 8px;
 
-        font-size: 0.9rem;
+        font-family: 'roboto';
+        font-weight: 500;
+        font-size: 0.8rem;
         color: #C2C2C2;
     }    
-    & input {
-        display: block;
-        width: 296px;
-        margin-bottom: 40px;
-        color: whitesmoke;
-        font-size: 1rem;
+`;
 
+const TextArea = styled.input`
+    display: block;
+    width: 296px;
+    margin-bottom: 40px;
 
-        outline: 0;
-        border: none;
-        border-bottom: 1px solid whitesmoke;
-        background-color: transparent;
+    color: whitesmoke;
+    font-size: 0.9rem;
+    font-family: 'Noto Sans KR';
+    font-weight: 400;
+    
 
-        &:focus {
-            outline: none;
-            border-bottom: 1px solid #FFA197;
-        }
-    }
+    border: none;
+    border-bottom: 1px solid whitesmoke;
+    background-color: transparent;
 
-    & button {
-        display: block;
-        outline: 0;
-        border: 0;
-        /* border: 1px solid whitesmoke; */
-        border-radius: 50%;
-        background-color: #FE7262;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #FFA197;
+    }   
+`;
 
-        width: 80px;
-        height: 80px;
+const ChangeVocaButton = styled.button`
+    display: block;
+    outline: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: #FE7262;
 
-        color: whitesmoke;
-        font-size: 0.9rem;
-        font-weight: bold;
-        line-height: 150%;
-        margin: 30px auto 0 auto;
+    width: 80px;
+    height: 80px;
 
-        cursor: pointer;
+    color: whitesmoke;
+    font-family: 'roboto';
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 150%;
+    margin: 30px auto 0 auto;
+    cursor: pointer;
 
-        will-change: transform;
+    will-change: transform;
+    transition: transform 450ms;
+
+    &:hover {
+        background-color: #FF8A7D;
         transition: transform 450ms;
-
-        &:hover {
-            background-color: #FF8A7D;
-            transition: transform 450ms;
-            transform: translateY(-10px);
-        }
+        transform: translateY(-10px);
     }
 `;
 
