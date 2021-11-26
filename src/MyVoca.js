@@ -72,7 +72,7 @@ const MyVoca = (props) => {
             onClick={() => {
                 window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
             }}
-            style={{ top: '140px',}}>
+            style={{ bottom: '115px',}}>
                 <ArrowUpwardRoundedIcon />
             </ScrollButton>
             <AddVoca>
@@ -85,7 +85,7 @@ const MyVoca = (props) => {
             onClick={() => {
                 window.scrollTo({top: window.innerHeight, left: 0, behavior: 'smooth'});
             }}
-            style={{ top: '240px', }}>
+            style={{ bottom: '25px', }}>
                 <ArrowDownwardRounded />
             </ScrollButton>
         </div>
@@ -98,7 +98,7 @@ const Container = styled.div`
     max-width: 1200px;
     height: 100vh;
 
-    padding: 40px 40px 0;
+    padding: 40px 14px 0;
     margin: auto;
 
     display: grid;
@@ -136,7 +136,7 @@ const Word = styled.p`
 `;
 
 const Cardbox = styled.div`
-    min-width: 400px;
+    min-width: 320px;
     height: 200px;
     padding: 20px;
 
@@ -213,8 +213,8 @@ const AddVoca = styled.div`
     }
 
     position: fixed;
-    right: 20px;
-    top: 190px;
+    right: 10px;
+    bottom: 70px;
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -247,7 +247,7 @@ const ScrollButton = styled.div`
     }
 
     position: fixed;
-    right: 20px;
+    right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;

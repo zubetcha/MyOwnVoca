@@ -47,7 +47,7 @@ function App() {
 const Header = styled.div`
     width: 100%;
     height: 100px;
-    border-bottom: 1px solid whitesmoke;
+    border-bottom: 0.5px solid whitesmoke;
     background: #252627;
 
     position: fixed;
