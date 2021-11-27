@@ -8,7 +8,7 @@ import { ReactComponent as Loading } from './threeDots.svg';
 const Spinner = (props) => {
     return (
         <Outer>
-            <Loading fill="#FA8072" />
+            <Loading fill="#FFF" />
         </Outer>
     )
 }
