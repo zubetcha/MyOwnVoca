@@ -64,12 +64,12 @@ const Detail = (props) => {
                 <label>translation</label>
                 <TextArea type="text" ref={translate} maxLength='20' 
                 defaultValue={current_voca ? current_voca.translate : ""} />
-                <ChangeVocaButton
+            </UpdateBox>
+            <ChangeVocaButton
                     onClick={() => {
                         updateVocaList();
                     }}
                 >CHANGE<br />VOCA</ChangeVocaButton>
-            </UpdateBox>
         </Container>
     )
 }

@@ -36,7 +36,6 @@ const AddVoca = (props) => {
             history.push("/");
         } else {
             window.alert('Please, fill in all blanks.');
-            return false;
         }
     };
 
@@ -53,12 +52,12 @@ const AddVoca = (props) => {
                 <TextArea type="text" ref={example} maxLength='20' />
                 <label>translation</label>
                 <TextArea type="text" ref={translate} maxLength='20' />
-                <AddVocaButton
+            </AddBox>
+            <AddVocaButton
                     onClick={() => {
                         addVocaList();
                     }}
                 >ADD<br />VOCA</AddVocaButton>
-            </AddBox>
         </Container>
     )
 }

@@ -153,7 +153,7 @@ const Cardbox = styled.div`
         &::after {
         content: '';
         display: block;
-        border-bottom: 5px solid #FE7262;
+        border-bottom: 5px solid #FA8072;
         transform: scaleX(1);
         transition: transform 250ms ease-in-out;
         } 
@@ -236,7 +236,7 @@ const AddVoca = styled.div`
         box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 10px 0px;
         transform: rotate(90deg);
         border: 0;
-        background: #FE7262;
+        background: #FA8072;
         opacity: 0.9;
     }
 `;

@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components'
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { keyframes } from '@emotion/react';
+
+// Components
+import { ReactComponent as Loading } from './threeDots.svg';
 
 const Spinner = (props) => {
     return (
         <Outer>
-            <DarkModeIcon style={{
-                color: '#F4D03F',
-                fontSize: '180px',
-
-            }}/>
+            <Loading fill="#FA8072" />
         </Outer>
     )
 }
@@ -26,7 +25,9 @@ const Outer = styled.div`
     align-items: center;
     justify-content: center;
 
-    
+    gap: 20px;
 `;
+
+
 
 export default Spinner;
