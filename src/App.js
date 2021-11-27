@@ -21,8 +21,8 @@ function App() {
     const voca = useSelector((state) => state.voca.list);
     return (
         <div className="App">
-            {/* { !is_loaded && <Spinner /> } */}
-            <Spinner />
+            { !is_loaded && <Spinner /> }
+            {/* <Spinner /> */}
             <Header>
                 <Oval
                     onClick={() => {
