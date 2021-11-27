@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteVocaFB, loadVocaFB, checkVocaFB } from './redux/modules/voca';
 
 // Components
+import Spinner from './Spinner';
 
 // material UI
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -18,6 +19,7 @@ const MyVoca = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const is_loaded = useSelector((state) => state.voca.is_loaded);
     const voca_list = useSelector((state) => state.voca.list);
 
     React.useEffect(() => {
@@ -26,8 +28,9 @@ const MyVoca = (props) => {
 
     return (
         <div>
+            {!is_loaded && <Spinner />}
             <Container>
-                {voca_list.map((voca, voca_index) => {
+                {voca_list.map((voca) => {
                     return (
                         <Cardbox
                             key={voca.id}>
@@ -39,18 +42,21 @@ const MyVoca = (props) => {
                             <InfoBox>
                                 <IconBox checked={voca.checked}>
                                     <CheckRoundedIcon
-                                    className='check_icon'
-                                    onClick={() => {
-                                        dispatch(checkVocaFB(voca.id));
-                                    }} />
+                                        className='check_icon'
+                                        onClick={() => {
+                                            dispatch(checkVocaFB(voca.id));
+                                        }} />
                                     <BorderColorRoundedIcon
                                         onClick={() => {
-                                            history.push("/detail/" + voca_index);
+                                            history.push("/detail/" + voca.id);
                                         }} />
                                     <ClearRoundedIcon
                                         onClick={() => {
-                                            window.alert('단어를 삭제하시겠습니다?');
-                                            dispatch(deleteVocaFB(voca.id));
+                                            if (window.confirm('단어를 삭제하시겠습니까?')) {
+                                                return dispatch(deleteVocaFB(voca.id));
+                                            } else {
+                                                return false;
+                                            }
                                         }} />
                                 </IconBox>
                                 <div>
@@ -69,10 +75,10 @@ const MyVoca = (props) => {
                 })}
             </Container>
             <ScrollButton
-            onClick={() => {
-                window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-            }}
-            style={{ bottom: '115px',}}>
+                onClick={() => {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                }}
+                style={{ bottom: '115px', }}>
                 <ArrowUpwardRoundedIcon />
             </ScrollButton>
             <AddVoca>
@@ -82,10 +88,10 @@ const MyVoca = (props) => {
                     }} />
             </AddVoca>
             <ScrollButton
-            onClick={() => {
-                window.scrollTo({top: window.innerHeight, left: 0, behavior: 'smooth'});
-            }}
-            style={{ bottom: '25px', }}>
+                onClick={() => {
+                    window.scrollTo({ top: window.innerHeight, left: 0, behavior: 'smooth' });
+                }}
+                style={{ bottom: '25px', }}>
                 <ArrowDownwardRounded />
             </ScrollButton>
         </div>
@@ -104,7 +110,6 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 40px;
-    align-content: flex-start;
 `;
 
 const VocaBox = styled.div`
@@ -225,7 +230,7 @@ const AddVoca = styled.div`
 
     border-radius: 50%;
     border: 0.3px solid #9F9F9F;
-    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 10px 0px;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 7px 0px;
 
     will-change: transform;
     transition: transform 600ms;
@@ -233,7 +238,7 @@ const AddVoca = styled.div`
     animation: ${SlideIn} 1000ms linear;
 
     &:hover {
-        box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 10px 0px;
+        box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 7px 0px;
         transform: rotate(90deg);
         border: 0;
         background: #FA8072;
@@ -258,7 +263,7 @@ const ScrollButton = styled.div`
 
     border-radius: 50%;
     border: 0.3px solid #9F9F9F;
-    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 10px 0px;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 7px 0px;
 
     animation: ${SlideIn} 1000ms linear;
 `;

@@ -18,11 +18,13 @@ const Detail = (props) => {
     const dispatch = useDispatch();
 
     const voca_list = useSelector((state) => state.voca.list);
-    const voca_index = params.index;
+    // const voca_id = params.id;
+    const voca_index = voca_list.findIndex((x) => {
+        return x.id === params.id;
+    });
     const current_voca = voca_list[voca_index];
 
     const updateVocaList = () => {
-        window.alert('단어를 수정하시겠습니다?');
         let wordValue = word.current.value;
         let pronunciationValue = pronunciation.current.value;
         let meaningValue = meaning.current.value;

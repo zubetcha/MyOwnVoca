@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createVocaFB } from './redux/modules/voca';
-
 
 const AddVoca = (props) => {
 
@@ -31,34 +30,36 @@ const AddVoca = (props) => {
                 meaning: meaningValue,
                 example: exampleValue,
                 translate: translateValue,
+                date: Date.now(),
                 checked: false,
             }));
             history.push("/");
         } else {
             window.alert('Please, fill in all blanks.');
+            return false;
         }
     };
 
     return (
-        <Container>
-            <AddBox>
-                <label>word</label>
-                <TextArea type="text" ref={word} maxLength='14' />
-                <label>pronunciation</label>
-                <TextArea type="text" ref={pronunciation} maxLength='20' />
-                <label>meaning</label>
-                <TextArea type="text" ref={meaning} maxLength='20' />
-                <label>example sentence</label>
-                <TextArea type="text" ref={example} maxLength='20' />
-                <label>translation</label>
-                <TextArea type="text" ref={translate} maxLength='20' />
-            </AddBox>
-            <AddVocaButton
+            <Container>
+                <AddBox>
+                    <label>word</label>
+                    <TextArea type="text" ref={word} maxLength='14' />
+                    <label>pronunciation</label>
+                    <TextArea type="text" ref={pronunciation} maxLength='20' />
+                    <label>meaning</label>
+                    <TextArea type="text" ref={meaning} maxLength='20' />
+                    <label>example sentence</label>
+                    <TextArea type="text" ref={example} maxLength='20' />
+                    <label>translation</label>
+                    <TextArea type="text" ref={translate} maxLength='20' />
+                </AddBox>
+                <AddVocaButton
                     onClick={() => {
                         addVocaList();
                     }}
                 >ADD<br />VOCA</AddVocaButton>
-        </Container>
+            </Container>
     )
 }
 

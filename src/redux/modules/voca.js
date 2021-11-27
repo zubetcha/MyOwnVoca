@@ -27,8 +27,8 @@ export const loadVoca = (voca_list) => {
     return { type: LOAD, voca_list };
 };
 
-export const createVoca = (voca) => {
-    return { type: CREATE, voca };
+export const createVoca = (voca_data) => {
+    return { type: CREATE, voca_data };
 };
 
 export const checkVoca = (voca_index, voca_checked) => {
@@ -46,13 +46,15 @@ export const deleteVoca = (voca_index) => {
 
 // ************* Middlewares ************* //
 
-export const loadVocaFB = (voca_list) => {
+export const loadVocaFB = (voca_li) => {
     return async function (dispatch) {
         const voca_data = await getDocs(collection(db, 'voca'));
-        let voca_list = [];
+        const _voca_list = []
         voca_data.forEach((voca) => {
-            voca_list.push({id: voca.id, ...voca.data()});
+            _voca_list.push({id: voca.id, ...voca.data()});
         })
+        const voca_list = _voca_list.sort((a, b) => b.date - a.date);
+        
         dispatch(loadVoca(voca_list));
     }
 }
@@ -61,8 +63,8 @@ export const createVocaFB = (voca) => {
     return async function (dispatch) {
         const docRef = await addDoc(collection(db, 'voca'), voca);
 
-        const voca_data = {id: docRef.id, ...voca};
-        // dispatch(createVoca(voca_data));
+        const voca_data= {id: docRef.id, ...voca};
+        dispatch(createVoca(voca_data));
     }
 }
 
@@ -126,7 +128,7 @@ export default function reducer(state = initialState, action = {}) {
         }
 
         case "voca/CREATE": {
-            const new_voca_list = [...state.list, action.voca];
+            const new_voca_list = [...state.list, action.voca_data];
             return { ...state, list: new_voca_list };
         }
 
