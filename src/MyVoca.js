@@ -89,7 +89,7 @@ const MyVoca = (props) => {
             </AddVoca>
             <ScrollButton
                 onClick={() => {
-                    window.scrollTo({ top: window.innerHeight, left: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: window.innerHeight*2, left: 0, behavior: 'smooth' });
                 }}
                 style={{ bottom: '25px', }}>
                 <ArrowDownwardRounded />
